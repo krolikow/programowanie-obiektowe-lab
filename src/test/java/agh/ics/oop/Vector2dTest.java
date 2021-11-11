@@ -11,15 +11,15 @@ public class Vector2dTest {
 
     @Test
     public void testEquals() {
-        Vector2d a = new Vector2d(1, 1);
-        Vector2d b = new Vector2d(2, 4);
-        Vector2d c = new Vector2d(2, 4);
-        assertEquals(a, a);
-        assertNotEquals(b, a);
-        assertNotEquals(a, c);
-        assertNotEquals(c, a);
-        assertEquals(b, c);
-        assertEquals(c, b);
+        Vector2d v_1_1 = new Vector2d(1, 1);
+        Vector2d v_2_4 = new Vector2d(2, 4);
+        Vector2d v_2_4a = new Vector2d(2, 4);
+        assertEquals(v_1_1, v_1_1);
+        assertNotEquals(v_2_4, v_1_1);
+        assertNotEquals(v_1_1, v_2_4a);
+        assertNotEquals(v_2_4a, v_1_1);
+        assertEquals(v_2_4, v_2_4a);
+        assertEquals(v_2_4a, v_2_4);
     }
 
     @Test

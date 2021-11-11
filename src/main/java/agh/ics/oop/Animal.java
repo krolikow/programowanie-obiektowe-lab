@@ -4,29 +4,39 @@ package agh.ics.oop;
 class Animal {
     private MapDirection dir;
     private Vector2d pos;
+    private final IWorldMap map;
 
 
-    public Animal() {
+    Animal(IWorldMap map,Vector2d initialPosition){
         this.dir = MapDirection.NORTH;
-        this.pos = new Vector2d(2, 2);
+        this.pos = initialPosition;
+        this.map =  map;
     }
+
 
     public MapDirection getDir() {
         return dir;
     }
 
+    public Vector2d getPos() {
+        return pos;
+    }
+
+
     @Override
-    public String toString() {
-        return "direction: " + dir + ", position: " + pos;
+    public String toString(){
+        return switch (dir){
+            case NORTH -> "N";
+            case EAST -> "E";
+            case WEST -> "W";
+            case SOUTH -> "S";
+        };
     }
 
     boolean isAt(Vector2d position) {
         return pos.equals(position);
     }
 
-    public boolean canMove(Vector2d position){
-        return (0 <= position.x && position.x <= 4 && 0 <= position.y && position.y <= 4);
-    }
 
     public void move(MoveDirection direction) {
         switch (direction) {
@@ -34,13 +44,13 @@ class Animal {
             case LEFT -> dir = dir.previous();
             case FORWARD -> {
                 Vector2d pos = this.pos.add(dir.toUnitVector());
-                if (this.canMove(pos)){
+                if (this.map.canMoveTo(pos)){
                     this.pos = pos;
                 }
             }
             case BACKWARD -> {
                 Vector2d pos = this.pos.subtract(dir.toUnitVector());
-                if (this.canMove(pos)) {
+                if (this.map.canMoveTo(pos)) {
                     this.pos = pos;
                 }
             }
