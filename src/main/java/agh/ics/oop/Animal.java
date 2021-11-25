@@ -1,57 +1,57 @@
 package agh.ics.oop;
-
+import java.lang.String;
 
 class Animal {
-    private MapDirection dir;
-    private Vector2d pos;
+    private MapDirection direction;
+    private Vector2d position;
     private final IWorldMap map;
 
 
     Animal(IWorldMap map,Vector2d initialPosition){
-        this.dir = MapDirection.NORTH;
-        this.pos = initialPosition;
+        this.direction = MapDirection.NORTH;
+        this.position = initialPosition;
         this.map =  map;
     }
 
 
-    public MapDirection getDir() {
-        return dir;
+    public MapDirection getDirection() {
+        return direction;
     }
 
-    public Vector2d getPos() {
-        return pos;
+    public Vector2d getPosition() {
+        return position;
     }
 
 
     @Override
     public String toString(){
-        return switch (dir){
-            case NORTH -> "N";
-            case EAST -> "E";
-            case WEST -> "W";
-            case SOUTH -> "S";
+        return switch (direction){
+            case NORTH -> "^";
+            case EAST -> ">";
+            case WEST -> "<";
+            case SOUTH -> "v";
         };
     }
 
     boolean isAt(Vector2d position) {
-        return pos.equals(position);
+        return this.position.equals(position);
     }
 
 
     public void move(MoveDirection direction) {
         switch (direction) {
-            case RIGHT -> dir = dir.next();
-            case LEFT -> dir = dir.previous();
+            case RIGHT -> this.direction = this.direction.next();
+            case LEFT -> this.direction = this.direction.previous();
             case FORWARD -> {
-                Vector2d pos = this.pos.add(dir.toUnitVector());
-                if (this.map.canMoveTo(pos)){
-                    this.pos = pos;
+                Vector2d newPosition = this.position.add(this.direction.toUnitVector());
+                if (this.map.canMoveTo(newPosition)){
+                    this.position = newPosition;
                 }
             }
             case BACKWARD -> {
-                Vector2d pos = this.pos.subtract(dir.toUnitVector());
-                if (this.map.canMoveTo(pos)) {
-                    this.pos = pos;
+                Vector2d newPosition = this.position.subtract(this.direction.toUnitVector());
+                if (this.map.canMoveTo(newPosition)) {
+                    this.position = newPosition;
                 }
             }
         }

@@ -19,7 +19,7 @@ public class SimulationEngineTest {
         Vector2d[] expectedRes = new Vector2d[]{new Vector2d(2,0), new Vector2d(3,5)} ;
         var i = 0;
         for(Animal animal : res){
-            assertEquals(expectedRes[i],animal.getPos());
+            assertEquals(expectedRes[i],animal.getPosition());
             i+=1;
         }
     }
