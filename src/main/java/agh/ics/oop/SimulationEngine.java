@@ -15,7 +15,6 @@ class SimulationEngine implements IEngine{
         initializeMap(startPositions);
     }
 
-
     private void initializeMap(Vector2d[] startPositions){
         for(Vector2d position : startPositions){
             Animal animal = new Animal(this.map,position);
@@ -24,7 +23,6 @@ class SimulationEngine implements IEngine{
             }
         }
     }
-
 
     public void run(){
         int len = this.moves.size();

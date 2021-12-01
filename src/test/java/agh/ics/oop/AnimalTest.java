@@ -24,7 +24,7 @@
 //        a.move(MoveDirection.RIGHT);
 //
 //        assertTrue(a.isAt(new Vector2d(3, 1)));
-//        assertEquals(MapDirection.WEST, a.getDir());
+//        assertEquals(MapDirection.WEST, a.getDirection());
 //
 //        Animal b = new Animal();
 //
@@ -33,7 +33,7 @@
 //        b.move(MoveDirection.BACKWARD);
 //        assertFalse(b.isAt(new Vector2d(2, -1)));
 //        assertTrue(b.isAt(new Vector2d(2, 0)));
-//        assertEquals(MapDirection.NORTH, b.getDir());
+//        assertEquals(MapDirection.NORTH, b.getDirection());
 //        b.move(MoveDirection.LEFT);
 //        b.move(MoveDirection.FORWARD);
 //        b.move(MoveDirection.FORWARD);

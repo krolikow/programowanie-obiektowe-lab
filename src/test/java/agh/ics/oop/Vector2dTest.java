@@ -107,3 +107,4 @@ public class Vector2dTest {
         assertEquals(b.opposite(), new Vector2d(1, -3));
     }
 }
+

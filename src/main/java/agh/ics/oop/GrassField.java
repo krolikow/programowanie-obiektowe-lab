@@ -6,7 +6,7 @@ import static java.lang.Math.sqrt;
 
 public class GrassField extends AbstractWorldMap {
     private final int grassTuftsNumber;
-    private final ArrayList<Grass> tuftsPositions= new ArrayList<>();;
+    private final ArrayList<Grass> tuftsPositions= new ArrayList<>();
 
     public GrassField(int grassTuftsNumber) {
         this.grassTuftsNumber = grassTuftsNumber;
@@ -14,7 +14,6 @@ public class GrassField extends AbstractWorldMap {
         this.lowLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         sowGrass();
     }
-
 
     public void sowGrass(){
         int n = this.grassTuftsNumber;
@@ -27,20 +26,16 @@ public class GrassField extends AbstractWorldMap {
             if (!(objectAt(newGrassPosition) instanceof Grass)){
                 Grass newGrass= new Grass(newGrassPosition);
                 tuftsPositions.add(newGrass);
-                actualizeSize(newGrass.getPosition());
+                super.actualizeSize(newGrass.getPosition());
                 n-=1;
             }
         }
     }
 
-    public void actualizeSize(Vector2d vector){
-        uppRight = uppRight.upperRight(vector);
-        lowLeft = lowLeft.lowerLeft(vector);
-    }
-
     public ArrayList<Grass> getGrass(){
         return this.tuftsPositions;
     }
+
 
     @Override
     public boolean isOccupied(Vector2d position) {
@@ -60,10 +55,10 @@ public class GrassField extends AbstractWorldMap {
         if(object!=null) return object;
 
         for(Grass grass: tuftsPositions){
-                if(grass.getPosition().equals(position)){
-                    return grass;
-                }
+            if(grass.getPosition().equals(position)){
+                return grass;
             }
+        }
         return null;
     }
 
@@ -86,5 +81,5 @@ public class GrassField extends AbstractWorldMap {
     public String toString(){
         return super.toString();
     }
-}
 
+}
