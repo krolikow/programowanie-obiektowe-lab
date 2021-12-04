@@ -19,7 +19,9 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
             this.animals.put(animal.getPosition(), animal);
             return true;
         }
-        throw new IllegalArgumentException("Wrong animal's position - already occupied.");
+        return false;
+    }
+    
     }
     public Object objectAt(Vector2d position) {
         return animals.get(position);
