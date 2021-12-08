@@ -2,16 +2,20 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
+
+
 import static java.lang.Math.sqrt;
 
-public class GrassField extends AbstractWorldMap {
+public class GrassField extends AbstractWorldMap implements IWorldMap{
     private final int grassTuftsNumber;
     private final ArrayList<Grass> tuftsPositions= new ArrayList<>();
 
+
     public GrassField(int grassTuftsNumber) {
         this.grassTuftsNumber = grassTuftsNumber;
-        this.uppRight = new Vector2d(0, 0);
-        this.lowLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        this.topRight = new Vector2d(0, 0);
+        this.bottomLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         sowGrass();
     }
 
@@ -26,16 +30,20 @@ public class GrassField extends AbstractWorldMap {
             if (!(objectAt(newGrassPosition) instanceof Grass)){
                 Grass newGrass= new Grass(newGrassPosition);
                 tuftsPositions.add(newGrass);
-                super.actualizeSize(newGrass.getPosition());
+                actualizeSize(newGrass.getPosition());
                 n-=1;
             }
         }
     }
 
+    public void actualizeSize(Vector2d vector){
+        this.topRight = topRight.upperRight(vector);
+        this.bottomLeft = bottomLeft.lowerLeft(vector);
+    }
+
     public ArrayList<Grass> getGrass(){
         return this.tuftsPositions;
     }
-
 
     @Override
     public boolean isOccupied(Vector2d position) {
@@ -63,23 +71,12 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public boolean canMoveTo(Vector2d position){
-        if(this.isOccupied(position)){
-            return !(this.objectAt(position) instanceof Animal);
+    public String toString() {
+        Set<Vector2d> keySet = mapElements.keySet();
+        for (Vector2d position : keySet) {
+            this.topRight = this.topRight.upperRight(position);
+            this.bottomLeft = this.bottomLeft.lowerLeft(position);
         }
-        return true;
-    }
-
-    @Override
-    public boolean place(Animal animal){
-        boolean bool = super.place(animal);
-        actualizeSize(animal.getPosition());
-        return bool;
-    }
-
-    @Override
-    public String toString(){
         return super.toString();
     }
-
 }

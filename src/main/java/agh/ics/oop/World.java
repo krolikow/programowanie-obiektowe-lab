@@ -7,15 +7,20 @@ import static java.lang.System.out;
 public class World {
 
     public static void main(String[] args) {
-        out.println("Start");
+        try{
+            out.println("Start");
 
-        ArrayList<MoveDirection> directions = OptionsParser.parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"});
-        IWorldMap map = new RectangularMap(10, 5);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        IEngine engine = new SimulationEngine(directions, map, positions);
-        engine.run();
+            ArrayList<MoveDirection> directions = OptionsParser.parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"});
+            AbstractWorldMap map = new GrassField(10);
+            Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+            IEngine engine = new SimulationEngine(directions, map, positions);
+            engine.run();
 
-        out.println("Stop");
-
+            out.println("Stop");
+        }
+        catch (IllegalArgumentException ex){
+            out.println(ex.toString());
+            System.exit(0);
+        }
     }
 }

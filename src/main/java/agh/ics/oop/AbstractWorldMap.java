@@ -1,49 +1,52 @@
 package agh.ics.oop;
 
-import java.util.HashMap;
 
-public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
-    protected Vector2d lowLeft = new Vector2d(0,0);
-    protected Vector2d uppRight = new Vector2d(0,0);
-    final HashMap<Vector2d, Animal> animals = new HashMap<>();
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
+    protected Map<Vector2d, AbstractWorldMapElement> mapElements = new LinkedHashMap<>();
+    protected Vector2d bottomLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    protected Vector2d topRight = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
+    protected MapVisualizer visualizer = new MapVisualizer(this);
 
     @Override
-    public boolean canMoveTo(Vector2d position) {
-        return isOccupied(position);
-    }
-
-
-    public boolean place(Animal animal){
-        animal.addObserver(this);
-        if(this.canMoveTo(animal.getPosition())) {
-            this.animals.put(animal.getPosition(), animal);
-            return true;
-        }
-        return false;
-    }
-    
-    }
     public Object objectAt(Vector2d position) {
-        return animals.get(position);
+        return mapElements.get(position);
     }
 
     public boolean isOccupied(Vector2d position) {
-        return animals.containsKey(position);
+        AbstractWorldMapElement element = mapElements.get(position);
+        return element != null;
     }
 
-    public void actualizeSize(Vector2d vector){
-        uppRight = uppRight.upperRight(vector);
-        lowLeft = lowLeft.lowerLeft(vector);
+    public boolean place(Animal animal) {
+        Vector2d position = animal.getPosition();
+
+        if (canMoveTo(position)) {
+            this.mapElements.put(position, animal);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        Animal animal =  animals.get(oldPosition);
-        animals.remove(oldPosition);
-        place(animal);
+
+    @Override
+    public boolean canMoveTo(Vector2d position) { // ok
+        return !(objectAt(position) instanceof Animal);
     }
 
     @Override
-    public String toString(){
-        return new MapVisualizer(this).draw(lowLeft,uppRight);
+    public String toString() {
+        return this.visualizer.draw(this.bottomLeft, this.topRight);
     }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        AbstractWorldMapElement animal = this.mapElements.get(oldPosition);
+        this.mapElements.remove(oldPosition);
+        this.mapElements.put(newPosition, animal);
+    }
+
 }
