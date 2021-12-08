@@ -18,8 +18,9 @@ public class World {
 
             out.println("Stop");
         }
-        catch (IllegalArgumentException ex){
-            out.println(ex.toString());
+        catch (IllegalArgumentException exception){
+            out.println(exception.toString());
+            out.println("Stop");
             System.exit(0);
         }
     }

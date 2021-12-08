@@ -27,10 +27,9 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
             this.mapElements.put(position, animal);
             return true;
         } else {
-            return false;
+            throw new IllegalArgumentException("Wrong animal's position: " + position + " is already occupied");
         }
     }
-
 
     @Override
     public boolean canMoveTo(Vector2d position) { // ok

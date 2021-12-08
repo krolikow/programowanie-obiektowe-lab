@@ -1,21 +1,19 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Set;
 
 
 import static java.lang.Math.sqrt;
 
 public class GrassField extends AbstractWorldMap implements IWorldMap{
+    private final MapBoundary mapBoundary = new MapBoundary();
     private final int grassTuftsNumber;
-    private final ArrayList<Grass> tuftsPositions= new ArrayList<>();
 
 
     public GrassField(int grassTuftsNumber) {
         this.grassTuftsNumber = grassTuftsNumber;
-        this.topRight = new Vector2d(0, 0);
-        this.bottomLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+//        this.topRight = new Vector2d(0, 0);
+//        this.bottomLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         sowGrass();
     }
 
@@ -28,55 +26,52 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
             Vector2d newGrassPosition = new Vector2d(randomX,randomY);
 
             if (!(objectAt(newGrassPosition) instanceof Grass)){
-                Grass newGrass= new Grass(newGrassPosition);
-                tuftsPositions.add(newGrass);
-                actualizeSize(newGrass.getPosition());
+                mapElements.put(newGrassPosition, new Grass(newGrassPosition));
+                this.mapBoundary.addElement(newGrassPosition);
                 n-=1;
             }
         }
     }
 
-    public void actualizeSize(Vector2d vector){
-        this.topRight = topRight.upperRight(vector);
-        this.bottomLeft = bottomLeft.lowerLeft(vector);
-    }
 
-    public ArrayList<Grass> getGrass(){
-        return this.tuftsPositions;
+    @Override
+    public boolean place(Animal animal) {
+        super.place(animal);
+        this.mapBoundary.addElement(animal.getPosition());
+        return true;
     }
 
     @Override
-    public boolean isOccupied(Vector2d position) {
-        boolean bool = super.isOccupied(position);
-        if (bool) return true;
-        for (Grass grass : this.tuftsPositions) {
-            if (position.equals(grass.getPosition())) {
-                return true;
+    public boolean canMoveTo(Vector2d position) {
+        Object object = objectAt(position);
+        if (object instanceof Grass) {
+            mapElements.remove(((Grass) object).position, object);
+            mapBoundary.removeElement(position);
+            Vector2d potentialPosition = new Vector2d((int) (Math.random() * sqrt(grassTuftsNumber*10)),
+                    (int) (Math.random() * sqrt(grassTuftsNumber*10)));
+            Object temp = objectAt(potentialPosition);
+            if (temp == null) {
+                mapElements.put(potentialPosition, new Grass(potentialPosition));
+                this.mapBoundary.addElement(potentialPosition);
             }
         }
-        return false;
+        return super.canMoveTo(position);
     }
 
     @Override
-    public Object objectAt(Vector2d position) {
-        Object object = super.objectAt(position);
-        if(object!=null) return object;
-
-        for(Grass grass: tuftsPositions){
-            if(grass.getPosition().equals(position)){
-                return grass;
-            }
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        AbstractWorldMapElement mapElement = mapElements.get(oldPosition);
+        if (mapElement instanceof Animal) {
+            mapElements.put(newPosition, mapElement);
+            mapElements.remove(oldPosition);
+            this.mapBoundary.positionChanged(oldPosition, newPosition);
         }
-        return null;
     }
 
     @Override
     public String toString() {
-        Set<Vector2d> keySet = mapElements.keySet();
-        for (Vector2d position : keySet) {
-            this.topRight = this.topRight.upperRight(position);
-            this.bottomLeft = this.bottomLeft.lowerLeft(position);
-        }
+        this.topRight = this.mapBoundary.getUpperRight();
+        this.bottomLeft = this.mapBoundary.getLowerLeft();
         return super.toString();
     }
 }
