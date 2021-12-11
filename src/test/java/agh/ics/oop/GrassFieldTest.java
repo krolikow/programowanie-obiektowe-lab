@@ -23,7 +23,7 @@ public class GrassFieldTest {
         Animal illegalAnimal = new Animal(map,new Vector2d(7,7));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> map.place(illegalAnimal));
-        assertEquals("Wrong animal's position: (7,7) is already occupied", exception.getMessage());
+        assertEquals("Wrong animal's position: (7,7) is already occupied.", exception.getMessage());
 
         assertTrue(map.place(new Animal(map, new Vector2d(-1, -3))));
         assertTrue(map.place(new Animal(map, new Vector2d(-4, 4))));

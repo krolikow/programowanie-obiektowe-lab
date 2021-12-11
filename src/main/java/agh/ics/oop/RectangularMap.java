@@ -20,6 +20,7 @@ class RectangularMap extends AbstractWorldMap implements IWorldMap {
         }
         return false;
     }
+
 }
 //    @Override
 //    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {

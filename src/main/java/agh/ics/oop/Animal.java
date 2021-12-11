@@ -58,7 +58,7 @@ class Animal extends AbstractWorldMapElement implements IMapElement{
             }
         }
     }
-
+    
     public void addObserver(IPositionChangeObserver observer){
         observers.add(observer);
     }
@@ -67,7 +67,7 @@ class Animal extends AbstractWorldMapElement implements IMapElement{
         observers.remove(observer);
     }
 
-    private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         for (IPositionChangeObserver observer : this.observers)
             observer.positionChanged(oldPosition, newPosition);
     }
