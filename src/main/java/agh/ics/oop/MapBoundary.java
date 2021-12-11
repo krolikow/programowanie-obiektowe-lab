@@ -13,7 +13,8 @@ class comparatorX implements Comparator<Pair<Vector2d,Class>>{
         Vector2d thatPosition = thatPair.getKey();
         String thisPositionType = thisPair.getValue().getName();
         String thatPositionType = thatPair.getValue().getName();
-
+        
+        // temporary solution
         IWorldMap map = null;
         Animal animal = new Animal(map, new Vector2d(0,0));
 
@@ -40,7 +41,8 @@ class comparatorY implements Comparator<Pair<Vector2d,Class>>{
         Vector2d thatPosition = thatPair.getKey();
         String thisPositionType = thisPair.getValue().getName();
         String thatPositionType = thatPair.getValue().getName();
-
+        
+        // temporary solution
         IWorldMap map = null;
         Animal animal = new Animal(map, new Vector2d(0,0));
 
