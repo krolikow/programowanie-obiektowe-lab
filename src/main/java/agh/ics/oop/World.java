@@ -8,8 +8,8 @@ public class World {
     public static void main(String[] args) {
         try {
             Application.launch(App.class, args);
-        } catch (IllegalArgumentException exception) {
-            System.out.println("Error has occured: " + exception);
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Error has occured: " + ex);
         }
     }
 }

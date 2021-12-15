@@ -2,20 +2,20 @@ package agh.ics.oop;
 import java.lang.String;
 import java.util.ArrayList;
 
-class Animal extends AbstractWorldMapElement implements IMapElement{
+public class Animal extends AbstractWorldMapElement{
     private MapDirection direction;
     private Vector2d position;
     private final IWorldMap map;
     private final ArrayList<IPositionChangeObserver> observers = new ArrayList<>();
 
-    Animal(IWorldMap map,Vector2d initialPosition){
-        this.direction = MapDirection.NORTH;
+    public Animal(IWorldMap map,Vector2d initialPosition){
         this.position = initialPosition;
+        this.direction = MapDirection.NORTH;
         this.map =  map;
     }
 
     public MapDirection getDirection() {
-        return direction;
+        return this.direction;
     }
 
     public Vector2d getPosition() {
@@ -70,5 +70,15 @@ class Animal extends AbstractWorldMapElement implements IMapElement{
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         for (IPositionChangeObserver observer : this.observers)
             observer.positionChanged(oldPosition, newPosition);
+    }
+
+    @Override
+    public String getFileName() {
+        return switch (this.direction) {
+            case NORTH -> "up.png";
+            case EAST -> "right.png";
+            case SOUTH -> "down.png";
+            case WEST -> "left.png";
+        };
     }
 }

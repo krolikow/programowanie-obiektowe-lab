@@ -168,6 +168,8 @@ public class SimulationEngine implements IEngine {
     private final ArrayList<MoveDirection> directions;
     private final AbstractWorldMap map;
     private final List<Animal> animals = new ArrayList<>();
+    private List<IPositionChangeObserver> observers = new ArrayList<IPositionChangeObserver>();
+    private int moveDelay = 0;
 
 
     public SimulationEngine(ArrayList<MoveDirection> directions, AbstractWorldMap map, Vector2d[] initialPositions){
