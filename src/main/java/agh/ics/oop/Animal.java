@@ -2,7 +2,7 @@ package agh.ics.oop;
 import java.lang.String;
 import java.util.ArrayList;
 
-public class Animal extends AbstractWorldMapElement{
+public class Animal implements IMapElement{
     private MapDirection direction;
     private Vector2d position;
     private final IWorldMap map;
@@ -12,6 +12,11 @@ public class Animal extends AbstractWorldMapElement{
         this.position = initialPosition;
         this.direction = MapDirection.NORTH;
         this.map =  map;
+    }
+
+    public Animal(IWorldMap map) {
+
+        this.map = map;
     }
 
     public MapDirection getDirection() {
@@ -67,9 +72,9 @@ public class Animal extends AbstractWorldMapElement{
         observers.remove(observer);
     }
 
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+    void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         for (IPositionChangeObserver observer : this.observers)
-            observer.positionChanged(oldPosition, newPosition);
+            observer.positionChanged(this,oldPosition, newPosition);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.Map;
+
 /**
  * The interface responsible for interacting with the map of the world.
  * Assumes that Vector2d and MoveDirection classes are defined.
@@ -46,4 +48,9 @@ public interface IWorldMap {
      */
     Object objectAt(Vector2d position);
 
+    Map<Vector2d, Animal> getAnimals();
+
+    Vector2d getLowerLeft();
+
+    Vector2d getUpperRight();
 }

@@ -71,13 +71,13 @@ public class MapBoundary implements IPositionChangeObserver {
         this.map = map;
     }
 
-    public void addElement(AbstractWorldMapElement element) {
+    public void addElement(IMapElement element) {
         Pair<Vector2d,Class> newPairToAdd = new Pair<>(element.getPosition(),element.getClass());
         this.setY.add(newPairToAdd);
         this.setX.add(newPairToAdd);
     }
 
-    public void removeElement(AbstractWorldMapElement element) {
+    public void removeElement(IMapElement element) {
         Pair<Vector2d,Class> newPairToDelete = new Pair<>(element.getPosition(),element.getClass());
         this.setX.remove(newPairToDelete);
         this.setY.remove(newPairToDelete);
@@ -91,20 +91,20 @@ public class MapBoundary implements IPositionChangeObserver {
         return setX.first().getKey().lowerLeft(setY.first().getKey());
     }
 
-    @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        IMapElement element = (AbstractWorldMapElement) map.objectAt(newPosition);
-
-        Pair<Vector2d,Class> newPairToDelete = new Pair<>(oldPosition, element.getClass());
-        setX.remove(newPairToDelete);
-        setY.remove(newPairToDelete);
-
-        Pair<Vector2d,Class> newPairToAdd = new Pair<>(newPosition, element.getClass());
-        // above assumes that element is always Animal and (happily) a situation that a Grass will be replanted
-        // won't occur (probably it will, have to test it)
-        this.setX.add(newPairToAdd);
-        this.setY.add(newPairToAdd);
-    }
+//    @Override
+//    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+//        IMapElement element = (AbstractWorldMapElement) map.objectAt(newPosition);
+//
+//        Pair<Vector2d,Class> newPairToDelete = new Pair<>(oldPosition, element.getClass());
+//        setX.remove(newPairToDelete);
+//        setY.remove(newPairToDelete);
+//
+//        Pair<Vector2d,Class> newPairToAdd = new Pair<>(newPosition, element.getClass());
+//        // above assumes that element is always Animal and (happily) a situation that a Grass will be replanted
+//        // won't occur (probably it will, have to test it)
+//        this.setX.add(newPairToAdd);
+//        this.setY.add(newPairToAdd);
+//    }
 
     // for testing purposes
 
@@ -119,4 +119,17 @@ public class MapBoundary implements IPositionChangeObserver {
     protected SortedSet<Pair<Vector2d,Class>> getSetX(){ return this.setX;}
 
     protected SortedSet<Pair<Vector2d,Class>> getSetY(){ return this.setY;}
+
+    @Override
+    public void positionChanged(IMapElement map_object, Vector2d oldPosition, Vector2d newPosition) {
+        Pair<Vector2d,Class> newPairToDelete = new Pair<>(oldPosition, map_object.getClass());
+
+        this.setX.remove(newPairToDelete);
+        this.setY.remove(newPairToDelete);
+
+        Pair<Vector2d,Class> newPairToAdd = new Pair<>(newPosition,  map_object.getClass());
+
+        this.setX.add(newPairToAdd);
+        this.setY.add(newPairToAdd);
+    }
 }

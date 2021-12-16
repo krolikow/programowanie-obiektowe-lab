@@ -160,45 +160,87 @@
 
 package agh.ics.oop;
 
-import static java.lang.System.out;
+import agh.ics.oop.gui.App;
+import javafx.application.Application;
+import javafx.application.Platform;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimulationEngine implements IEngine {
-    private final ArrayList<MoveDirection> directions;
-    private final AbstractWorldMap map;
-    private final List<Animal> animals = new ArrayList<>();
-    private List<IPositionChangeObserver> observers = new ArrayList<IPositionChangeObserver>();
-    private int moveDelay = 0;
+public class SimulationEngine implements IEngine,Runnable {
+    private ArrayList<MoveDirection> directions; // final?
+    private final IWorldMap map;
+    private final App app;
 
 
-    public SimulationEngine(ArrayList<MoveDirection> directions, AbstractWorldMap map, Vector2d[] initialPositions){
+    public SimulationEngine(ArrayList<MoveDirection> directions, IWorldMap map, Vector2d[] initialPositions, Application app){
         this.directions = directions;
         this.map = map;
+        this.app = (App) app;
         initializeMap(initialPositions);
     }
 
+    public void getDirections(ArrayList<MoveDirection> directions) {
+        this.directions = directions;
+    }
+
+//    public void setDirections(ArrayList<MoveDirection> directions) {
+//        this.directions = directions;
+//    }
+//
+//    public SimulationEngine(AbstractWorldMap map, Vector2d[] initialPositions, Application app) {
+//        this.map = map;
+//        this.app = (App) app;
+//        initializeMap(initialPositions);
+//    }
 
     private void initializeMap(Vector2d[] initialPositions){
         for (Vector2d position : initialPositions){
-            Animal animal = new Animal(map, position);
-            if (map.place(animal)) animals.add(animal);
-            animal.addObserver(this.map);
+            map.place(new Animal(this.map, position));
+//            animal.addObserver(this.map);
         }
     }
 
 
-    public void run(){
-        out.println(this.map);
-        int i = 0;
-        while (i < directions.size()) {
-            for (Animal animal : animals) {
-                animal.move(directions.get(i));
+//    public void run(){
+//        out.println(this.map);
+//        int i = 0;
+//        while (i < directions.size()) {
+//            for (Animal animal : animals) {
+//                animal.move(directions.get(i));
+//
+//                out.println(directions.get(i).toString());
+//                out.println(map);
+//                i++;
+//                if (i >= directions.size()) break;
+//            }
+//        }
+//    }
 
-                out.println(directions.get(i).toString());
-                out.println(map);
-                i++;
-                if (i >= directions.size()) break;
+
+    @Override
+    public void run() {
+        try {
+            int moveDelay = 500;
+            Thread.sleep(moveDelay);
+        } catch (InterruptedException e) {
+            System.out.println("Thread.sleep error: " + e);
+        }
+        Animal[] animals = this.map.getAnimals().values().toArray(new Animal[0]);
+        int len = animals.length;
+        int i = 0;
+
+        for (MoveDirection direction : this.directions) {
+            animals[i % len].move(direction);
+            i++;
+            System.out.println(this.map);
+            Platform.runLater(() -> {
+                app.positionChanged(new Animal(map), new Vector2d(1, 1), new Vector2d(1, 1));
+            });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println("Thread.sleep error: " + e);
             }
         }
     }
