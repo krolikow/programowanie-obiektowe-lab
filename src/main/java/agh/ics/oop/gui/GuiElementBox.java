@@ -10,8 +10,6 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,7 +23,7 @@ public class GuiElementBox {
             this.imageDown = new Image(new FileInputStream("src/main/resources/down.png"));
             this.imageRight = new Image(new FileInputStream("src/main/resources/right.png"));
             this.imageLeft = new Image(new FileInputStream("src/main/resources/left.png"));
-            this.imageGrass = new Image(new FileInputStream("src/main/resources/better-grass.png"));
+            this.imageGrass = new Image(new FileInputStream("src/main/resources/grass.png"));
         } catch (FileNotFoundException ex) {
             System.out.println("File doesn't exist.");
         }
@@ -60,7 +58,6 @@ public class GuiElementBox {
 
         return elementVBox;
 
-        }
     }
-
+}
 

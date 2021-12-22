@@ -12,7 +12,7 @@ public class Grass extends AbstractWorldMapElement
 
     @Override
     public String getFileName() {
-        return "grass.png";
+        return "src/main/resources/grass.png";
     }
 
     @Override
@@ -20,4 +20,3 @@ public class Grass extends AbstractWorldMapElement
         return "*";
     }
 }
-

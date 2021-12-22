@@ -48,9 +48,8 @@ public interface IWorldMap {
      */
     Object objectAt(Vector2d position);
 
-    Map<Vector2d, Animal> getAnimals();
-
-    Vector2d getLowerLeft();
-
-    Vector2d getUpperRight();
+//
+//    Vector2d getLowerLeft();
+//
+//    Vector2d getUpperRight();
 }

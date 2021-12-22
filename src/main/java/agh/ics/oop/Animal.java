@@ -1,8 +1,9 @@
 package agh.ics.oop;
 import java.lang.String;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Animal implements IMapElement{
+public class Animal extends AbstractWorldMapElement implements IMapElement{
     private MapDirection direction;
     private Vector2d position;
     private final IWorldMap map;
@@ -12,11 +13,6 @@ public class Animal implements IMapElement{
         this.position = initialPosition;
         this.direction = MapDirection.NORTH;
         this.map =  map;
-    }
-
-    public Animal(IWorldMap map) {
-
-        this.map = map;
     }
 
     public MapDirection getDirection() {
@@ -30,7 +26,7 @@ public class Animal implements IMapElement{
 
     @Override
     public String toString(){
-        return switch (direction){
+        return switch (this.direction){
             case NORTH -> "^";
             case EAST -> ">";
             case WEST -> "<";
@@ -63,7 +59,7 @@ public class Animal implements IMapElement{
             }
         }
     }
-    
+
     public void addObserver(IPositionChangeObserver observer){
         observers.add(observer);
     }
@@ -72,18 +68,19 @@ public class Animal implements IMapElement{
         observers.remove(observer);
     }
 
-    void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         for (IPositionChangeObserver observer : this.observers)
-            observer.positionChanged(this,oldPosition, newPosition);
+            observer.positionChanged(oldPosition, newPosition);
     }
 
     @Override
     public String getFileName() {
         return switch (this.direction) {
-            case NORTH -> "up.png";
-            case EAST -> "right.png";
-            case SOUTH -> "down.png";
-            case WEST -> "left.png";
+            case NORTH -> "src/main/resources/up.png";
+            case EAST -> "src/main/resources/right.png";
+            case SOUTH -> "src/main/resources/down.png";
+            case WEST -> "src/main/resources/left.png";
         };
     }
 }
+

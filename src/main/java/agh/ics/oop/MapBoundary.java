@@ -13,8 +13,7 @@ class comparatorX implements Comparator<Pair<Vector2d,Class>>{
         Vector2d thatPosition = thatPair.getKey();
         String thisPositionType = thisPair.getValue().getName();
         String thatPositionType = thatPair.getValue().getName();
-        
-        // temporary solution
+
         IWorldMap map = null;
         Animal animal = new Animal(map, new Vector2d(0,0));
 
@@ -41,8 +40,7 @@ class comparatorY implements Comparator<Pair<Vector2d,Class>>{
         Vector2d thatPosition = thatPair.getKey();
         String thisPositionType = thisPair.getValue().getName();
         String thatPositionType = thatPair.getValue().getName();
-        
-        // temporary solution
+
         IWorldMap map = null;
         Animal animal = new Animal(map, new Vector2d(0,0));
 
@@ -84,27 +82,34 @@ public class MapBoundary implements IPositionChangeObserver {
     }
 
     public Vector2d getUpperRight(){
+        if (this.setX.size() == 0) {
+            return new Vector2d(0, 0);
+        }
         return setX.last().getKey().upperRight(setY.last().getKey());
     }
 
     public Vector2d getLowerLeft(){
+        if (this.setX.size() == 0) {
+            return new Vector2d(0, 0);
+        }
         return setX.first().getKey().lowerLeft(setY.first().getKey());
     }
 
-//    @Override
-//    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-//        IMapElement element = (AbstractWorldMapElement) map.objectAt(newPosition);
-//
-//        Pair<Vector2d,Class> newPairToDelete = new Pair<>(oldPosition, element.getClass());
-//        setX.remove(newPairToDelete);
-//        setY.remove(newPairToDelete);
-//
-//        Pair<Vector2d,Class> newPairToAdd = new Pair<>(newPosition, element.getClass());
-//        // above assumes that element is always Animal and (happily) a situation that a Grass will be replanted
-//        // won't occur (probably it will, have to test it)
-//        this.setX.add(newPairToAdd);
-//        this.setY.add(newPairToAdd);
-//    }
+    @Override
+    public void positionChanged() {};
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        IMapElement element = (AbstractWorldMapElement) map.objectAt(newPosition);
+
+        Pair<Vector2d,Class> newPairToDelete = new Pair<>(oldPosition, element.getClass());
+        setX.remove(newPairToDelete);
+        setY.remove(newPairToDelete);
+
+        Pair<Vector2d,Class> newPairToAdd = new Pair<>(newPosition, element.getClass());
+        this.setX.add(newPairToAdd);
+        this.setY.add(newPairToAdd);
+    }
 
     // for testing purposes
 
@@ -120,16 +125,4 @@ public class MapBoundary implements IPositionChangeObserver {
 
     protected SortedSet<Pair<Vector2d,Class>> getSetY(){ return this.setY;}
 
-    @Override
-    public void positionChanged(IMapElement map_object, Vector2d oldPosition, Vector2d newPosition) {
-        Pair<Vector2d,Class> newPairToDelete = new Pair<>(oldPosition, map_object.getClass());
-
-        this.setX.remove(newPairToDelete);
-        this.setY.remove(newPairToDelete);
-
-        Pair<Vector2d,Class> newPairToAdd = new Pair<>(newPosition,  map_object.getClass());
-
-        this.setX.add(newPairToAdd);
-        this.setY.add(newPairToAdd);
-    }
 }
